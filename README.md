@@ -141,6 +141,15 @@ Another option would be to use the docker integration plugin available for visua
 
 The starting code in `contour_following.cpp` we provide already contains the necessary to connect to the robot, move it to a starting position and read in a loop the tactile sensor readout. There are markers in the file that will tell you where you will have to add your contribution.
 
+### Usefull functions to controll the robot
+goToPose(position, orientation, velocity): the robot will move to the given position with a set orientation and veocity. After reaching the pose new commands can be send.
+
+goToPoseSync(position, orientation, velocity): the robot will again move to the given position with a set orientation and veocity, but give constant feedback and can hande subsequently new commands.
+
+setTaskVelocities(position + velocity, orientation + velocity): allows to explicitly set the movement velocity.
+
+setTrackingMode = true: keeps the robot engaged even after reaching the final destination.
+
 ### Task
 
 The robot will always start at the top right corner of the objects with no contact with the contours. Your task is to give iCub the ability to follow the different contours, first in 2d. Following the circle for instance will be the easiest task as it is continuous and has no abrupt changes. The triangle otherwise includes very sharp edges and the robot needs to adapt its movement fast and correctly to keep track. At least we have included an object with crossing contours to test your solutions on sustainability.
