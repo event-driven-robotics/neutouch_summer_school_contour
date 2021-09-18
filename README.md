@@ -53,31 +53,31 @@ docker run hello-world
 After the installation you can run the image using the following command:
 
 ```bash
-docker run -it --name telluride \
+docker run -it --name contour_following \
            -v /tmp/.X11-unix/:/tmp/.X11-unix \
            -e DISPLAY=unix$DISPLAY \
-           eventdrivenrobotics/telluride:latest
+           2103simon/contour_following:latest
 ```
 
 If you want to use the primary graphic card on your system, typically Intel, within the container run the following:
 ```bash
-docker run -it --name telluride \
+docker run -it --name contour_following \
             -v /tmp/.X11-unix/:/tmp/.X11-unix \
             -e DISPLAY=$DISPLAY \
             -v /dev/dri:/dev/dri \
-            eventdrivenrobotics/telluride 
+            2103simon/contour_following:latest 
 ```
 
 To use NVIDIA GPU specifically, please use instead:
 
 ```bash
-docker run -it --name telluride \
+docker run -it --name contour_following \
            -v /tmp/.X11-unix/:/tmp/.X11-unix \
            -e DISPLAY=unix$DISPLAY \
            -v /dev/:/dev \
            --runtime=nvidia \
            -e NVIDIA_DRIVER_CAPABILITIES=graphics \
-           eventdrivenrobotics/telluride:latest
+           2103simon/contour_following:latest
 ```
 
 For further information about the meaning of each option please refer to the official documentation at this [link](https://docs.docker.com/engine/reference/run/).
@@ -100,8 +100,8 @@ fi
 
 After closing the terminals, you can always access a previously run container with:
 ```bash
-docker start telluride
-docker exec -it telluride bash
+docker start contour_following
+docker exec -it contour_following bash
 ```
 
 To avoid typing long and hard to memorize commands we have provided a simple set of commands that you can source from your `~/.bashrc`. To do it download the file available in this repo at `docker/bashrc_docker` then add the following lines to your bashrc:
