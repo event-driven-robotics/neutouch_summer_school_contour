@@ -4,6 +4,18 @@ Contour following with iCub
 Contour following poses no challenge to us as humans as we do it instinctively with no effort. But in robotics, it requires a lot of effort. On the one hand, the input has to be processed in a meaningful way, on the other hand, motor control has to be executed according to such input. This close loop between sensory read-out and action control is still troublesome especially when it relies on tactile information only.
 To tackle this we have designed a contour following task in different stages of complexity starting from continuous 2d structures to challenging 3d structures. The humanoid robot [iCub](https://www.iit.it/web/icub) implemented in the simulation environment [gazebo](http://gazebosim.org/) and equipped with [tactile sensors](http://wiki.icub.org/wiki/Tactile_sensors_(aka_Skin)) in the fingertip and palm serves as our object of research. More about the sensors, there placing and implementation you can find [here](https://github.com/2103simon/icub_haptic_exploration_environment). The simulation environment can be easily accessed using [docker](https://www.docker.com/). For that, we have prepared a ready-to-use [docker image](https://hub.docker.com/repository/docker/2103simon/contour_following).
 
+
+### The task
+
+The robot will always start at the top right corner of the objects with no contact with the contours. Your task is to give iCub the ability to follow the different contours, first in 2d. Following the circle for instance will be the easiest task as it is continuous and has no abrupt changes. The triangle otherwise includes very sharp edges and the robot needs to adapt its movement fast and correctly to keep track. At least we have included an object with crossing contours to test your solutions on sustainability.
+
+For those who master the first challange we have inlcuded the 3d objects. Now it is not sufficient to rely on the spacial component (e.g. which sensor measures the force), but the amount of force gets an important feature to keep contact. Here again the difficulty is wide spread from continues, wavelike structures to some with sharp edges and crossing contours. The 3d objects are similar to the 2d with just adding depth dependencies on top. 
+
+
+2d objects | 2.5d objects | 3d objects
+:---------:|:------------:|:----------:
+![2d_objects](assets/2d_objects.png)  | ![2_5d_objects](assets/2_5d_objects.png)  | ![3d_objects](assets/3d_objects.png) 
+
 # Getting started
 
 ### What is Docker?
@@ -149,19 +161,3 @@ goToPoseSync(position, orientation, velocity): the robot will again move to the 
 setTaskVelocities(position + velocity, orientation + velocity): allows to explicitly set the movement velocity.
 
 setTrackingMode = true: keeps the robot engaged even after reaching the final destination.
-
-### Task
-
-The robot will always start at the top right corner of the objects with no contact with the contours. Your task is to give iCub the ability to follow the different contours, first in 2d. Following the circle for instance will be the easiest task as it is continuous and has no abrupt changes. The triangle otherwise includes very sharp edges and the robot needs to adapt its movement fast and correctly to keep track. At least we have included an object with crossing contours to test your solutions on sustainability.
-
-For those who master the first challange we have inlcuded the 3d objects. Now it is not sufficient to rely on the spacial component (e.g. which sensor measures the force), but the amount of force gets an important feature to keep contact. Here again the difficulty is wide spread from continues, wavelike structures to some with sharp edges and crossing contours. The 3d objects are similar to the 2d with just adding depth dependencies on top. 
-
-
-2d objects | 2.5d objects | 3d objects
-:---------:|:------------:|:----------:
-![2d_objects](assets/2d_objects.png)  | ![2_5d_objects](assets/2_5d_objects.png)  | ![3d_objects](assets/3d_objects.png) 
-
-
-If you are able to solve all of the given tasks we are still able to provide you even more challanging ones. The content of that can be discussed in the regular meetings.
-
-Good luck and have fun
