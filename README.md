@@ -12,9 +12,9 @@ The robot will always start at the top right corner of the objects with no conta
 For those who master the first challange we have inlcuded the 3d objects. Now it is not sufficient to rely on the spacial component (e.g. which sensor measures the force), but the amount of force gets an important feature to keep contact. Here again the difficulty is wide spread from continues, wavelike structures to some with sharp edges and crossing contours. The 3d objects are similar to the 2d with just adding depth dependencies on top. 
 
 
-2d objects | 2.5d objects | 3d objects
-:---------:|:------------:|:----------:
-![2d_objects](assets/2d_objects.png)  | ![2_5d_objects](assets/2_5d_objects.png)  | ![3d_objects](assets/3d_objects.png) 
+2d objects | 2.5d objects
+:---------:|:------------:
+![2d_objects](assets/2d_objects.png)  | ![2_5d_objects](assets/2_5d_objects.png)
 
 # Getting started
 
