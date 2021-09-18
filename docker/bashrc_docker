@@ -1,0 +1,79 @@
+_completion_loader docker;
+# Usage:
+#   docker_alias_completion_wrapper <completion function> <alias/function name>
+#
+# Example:
+#   dock-ip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' $@ ;}
+#   docker_alias_completion_wrapper __docker_complete_containers_running dock-ip
+function docker_alias_completion_wrapper {
+  local completion_function="$1";
+  local alias_name="$2";
+  local args="$3"
+
+  local func=$(cat <<EOT
+    # Generate a new completion function name
+    function _$alias_name() {
+        # Start off like _docker()
+        local previous_extglob_setting=\$(shopt -p extglob);
+        shopt -s extglob;
+
+        # Populate \$cur, \$prev, \$words, \$cword
+        _get_comp_words_by_ref -n : cur prev words cword;
+
+        # Declare and execute
+        declare -F $completion_function >/dev/null && $completion_function $args;
+
+        eval "\$previous_extglob_setting";
+        return 0;
+    };
+EOT
+  );
+  eval "$func";
+
+  # Register the alias completion function
+  complete -F _$alias_name $alias_name
+}
+export -f docker_alias_completion_wrapper
+
+run_docker(){
+    if [ -z "$1" ]
+    then
+        echo "Provide image name and optionally container name."
+        echo "If no container name given, image name is used."
+        echo "Usage: run_docker <image_name> [OPTIONS] or run_docker <image_name> <container_name> [OPTIONS]"
+        return
+    fi
+    image_name=$1
+    [ -z "$2" ] && container_name=$1 || container_name=$2
+    echo "Running $image_name in container $container_name"
+    docker run -it --name $container_name \
+        --hostname $container_name \
+        -v $PATH_TO_CODE:/code \
+        -v $PATH_TO_APP:/apps \
+        -v $PATH_TO_DATA:/data \
+        -v /tmp/.X11-unix/:/tmp/.X11-unix \
+        -e DISPLAY=unix$DISPLAY \
+        "${@:3}" \
+        $image_name
+}
+docker_alias_completion_wrapper __docker_complete_images run_docker --tag
+
+run_docker_opengl(){
+    run_docker "${@}" \
+        -v /dev/:/dev \
+        --runtime=nvidia \
+        -e NVIDIA_DRIVER_CAPABILITIES=graphics
+}
+docker_alias_completion_wrapper __docker_complete_images run_docker_opengl --tag
+
+start_docker(){
+    if [ -z "$1" ]
+    then
+        echo "Provide container to start"
+        echo "Usage: start_docker <container_name>"
+        return
+    fi
+    docker start $1
+    docker exec -it $1 bash
+}
+docker_alias_completion_wrapper __docker_complete_containers_all start_docker
