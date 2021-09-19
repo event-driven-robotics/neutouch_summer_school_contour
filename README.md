@@ -92,7 +92,7 @@ We provide several contours you can use in the exercise. They can be listed [her
 1. Run the following from within the container:
 ```console
    cd /usr/local/src/icub_haptic_exploration_environment/build
-   gedit ../worlds/he_scenario.sdf
+   gedit ../environment/worlds/he_scenario.sdf
 ```
 1. Change line `40` to `model://cf_<name>` where `<name>` is e.g. `circle_2_5d`
 
