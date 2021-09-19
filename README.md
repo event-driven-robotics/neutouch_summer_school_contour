@@ -157,7 +157,7 @@ bool updateModule()
 
     if (input != nullptr)
     {
-      for (const iCub::skinDynLib::skinContact& skin_contact : input)
+      for (const iCub::skinDynLib::skinContact& skin_contact : *input)
       {
         // Each contact might contain several taxels activations
         // However, in the current implementation a contact always contains a single taxel
