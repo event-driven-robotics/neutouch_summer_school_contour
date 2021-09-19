@@ -41,6 +41,20 @@ In this exercise, we challenge you to design a controller to **follow a contour 
     ```
     > Note: it is important to `cd` inside the cloned repository `neutouch_summer_school_contour`in order to create the container succesfully using the command above (otherwise `$PWD` will not contain the correct path.)
 
+For NVIDIA GPUs please use instead
+```console
+cd neutouch_summer_school_contour
+xhost +
+docker run -it --name contour_following \
+           -e DISPLAY=$DISPLAY \
+           -v /dev/dri:/dev/dri \
+           -v $PWD:/neutouch_summer_school_contour \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           --runtime=nvidia \
+           -e NVIDIA_DRIVER_CAPABILITIES=graphics \
+           2103simon/contour_following:latest
+```
+
 Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**):
 ```console
 docker exec -it contour_following bash
