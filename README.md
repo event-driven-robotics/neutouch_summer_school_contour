@@ -41,12 +41,12 @@ In this exercise, we challenge you to design a controller to **follow a contour 
     ```
     > Note: it is important to `cd` inside the cloned repository `neutouch_summer_school_contour`in order to create the container succesfully using the command above (otherwise `$PWD` will not contain the correct path.)
 
-Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**).
+Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**):
 ```console
 docker exec -it contour_following bash
 ```
 
-If for any reason the container is not running (you will receive an error in such case), it can be started again using
+If for any reason the container is not running (you will receive an error in such case), it can be started again using:
 ```console
 docker start contour_following
 ```
@@ -70,7 +70,7 @@ Should you need to stop the environment, you can use the red button `Stop all`. 
 
 We provide several contours you can use in the exercise. They can be listed [here](https://github.com/2103simon/icub_haptic_exploration_environment/tree/master/environment/models/contour_following). To change the contour please proceed as follows:
 
-1. Visualize the contour to see its shape by opening in your browser the .STL mesh file. E.g. for the shape `circle_2_5d` try to visualize https://github.com/2103simon/icub_haptic_exploration_environment/blob/master/environment/models/contour_following/cf_circle_2_5d/circle_2_5d.stl
+1. Visualize the contour to see its shape by opening in your browser the .STL mesh file. E.g. for the shape `circle_2_5d` try to visualize [circle_2_5d.stl](https://github.com/2103simon/icub_haptic_exploration_environment/blob/master/environment/models/contour_following/cf_circle_2_5d/circle_2_5d.stl)
 
 1. Stop the simulation if running
 
