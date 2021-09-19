@@ -166,10 +166,9 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
   {
       iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
 
-      // input is a std::vector of iCub::skinDynLib::skinContact
-
       if (input != nullptr)
       {
+        // input is a std::vector of iCub::skinDynLib::skinContact contacts
         for (const iCub::skinDynLib::skinContact& skin_contact : *input)
         {
           // Each contact might contain several taxels activations
