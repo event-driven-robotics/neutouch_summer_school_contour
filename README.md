@@ -158,45 +158,45 @@ The code is implemented as a standalone class `ContourFollowingModule`:
 
 Sensors simulate the behavior of the iCub humanoid robot tactile sensors that are present on the fingertips. Each fingertip is equipped with 12 taxels that provide a measure of the pressure exerted on them.
 
-Each taxel is associated with an ID as follows:
+- Each taxel is associated with an ID as follows:
 
 <p align="center"><img src="assets/taxels_ids.png" alt="" height=200px/></p>
 
-You can visualize the pressure of the taxel with id `<ID>` as follows. From **within the docker** run:
-```console
+- You can visualize the pressure of the taxel with id `<ID>` as follows. From **within the docker** run:
+  ```console
    yarpscope --remote /taxels_output:o --index <ID> --no-persistent
-```
-<p align="center"><img src="assets/scope.gif" alt="" height=200px/></p>
+  ```
+  <p align="center"><img src="assets/scope.gif" alt="" height=200px/></p>
 
 
-You can access to the pressure of each taxel as follows:
+- You can access to the pressure of each taxel as follows:
 
-```
-...
-// This is an excerpt of the contour_following.cpp file
-...
-bool updateModule()
-{
-    iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
+  ```
+  ...
+  // This is an excerpt of the contour_following.cpp file
+  ...
+  bool updateModule()
+  {
+      iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
 
-    // input is a std::vector of iCub::skinDynLib::skinContact
+      // input is a std::vector of iCub::skinDynLib::skinContact
 
-    if (input != nullptr)
-    {
-      for (const iCub::skinDynLib::skinContact& skin_contact : *input)
+      if (input != nullptr)
       {
-        // Each contact might contain several taxels activations
-        // However, in the current implementation a contact always contains a single taxel
+        for (const iCub::skinDynLib::skinContact& skin_contact : *input)
+        {
+          // Each contact might contain several taxels activations
+          // However, in the current implementation a contact always contains a single taxel
 
-        // To get the the ID of the taxel use
-        // const int taxel_id = skin_contact.getTaxelList()[0];
+          // To get the the ID of the taxel use
+          // const int taxel_id = skin_contact.getTaxelList()[0];
 
-        // To get the pressure associated to it use
-        // const double pressure = skin_contact.getPressure();
+          // To get the pressure associated to it use
+          // const double pressure = skin_contact.getPressure();
+        }
       }
-    }
-}
-```
+  }
+  ```
 
 </details>
 
