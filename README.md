@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="https://github.com/event-driven-robotics/neutouch_summer_school_contour/blob/master/assets/neutouch_eu_logo.png">
+</p>
+
+<p align="center">
     <h1 align="center">
         NeuTouch Summer School 2021<br>
         Contour following with iCub
