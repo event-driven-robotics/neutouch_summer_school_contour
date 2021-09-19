@@ -151,7 +151,7 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
 
 - You can visualize the pressure of the taxel with id `<ID>` as follows if the `contour_following` module is running. From **within the docker** run:
   ```console
-   yarpscope --remote /taxels_output:o --index <ID> --no-persistent
+   yarpscope --remote /taxels_output:o --index <ID>
   ```
   <p align="center"><img src="assets/scope.gif" alt="" height=300px/></p>
 
