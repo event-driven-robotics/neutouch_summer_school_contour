@@ -6,17 +6,6 @@ RUN apt update && \
     git \
     openssh-client
 
-# add credentials on build
-RUN mkdir /root/.ssh/
-
-ADD id_ed25519 /root/.ssh/id_rsa
-
-RUN chmod 400 /root/.ssh/id_rsa
-
-# make sure your domain is accepted
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
-
 RUN cd /usr/local/src && \
     git clone https://github.com/2103simon/icub_haptic_exploration_environment.git
 
@@ -25,17 +14,17 @@ FROM ubuntu:20.04
 
 RUN dpkg --add-architecture i386 && \
     apt update && apt install -y --no-install-recommends \
-        libxau6 libxau6:i386 \
-        libxdmcp6 libxdmcp6:i386 \
-        libxcb1 libxcb1:i386 \
-        libxext6 libxext6:i386 \
-        libx11-6 libx11-6:i386
+    libxau6 libxau6:i386 \
+    libxdmcp6 libxdmcp6:i386 \
+    libxcb1 libxcb1:i386 \
+    libxext6 libxext6:i386 \
+    libx11-6 libx11-6:i386
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
-        ${NVIDIA_VISIBLE_DEVICES:-all}
+    ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES \
-        ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compat32,utility
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,compat32,utility
 
 RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
     echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
@@ -45,14 +34,14 @@ ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:/usr/lib/i386-linux-gnu${LD_LIBRAR
 
 RUN apt install -y --no-install-recommends \
     libglvnd0 libglvnd0:i386 \
-  libgl1 libgl1:i386 \
-  libglx0 libglx0:i386 \
-  libegl1 libegl1:i386\
-  libgles2 libgles2:i386
+    libgl1 libgl1:i386 \
+    libglx0 libglx0:i386 \
+    libegl1 libegl1:i386\
+    libgles2 libgles2:i386
 
 RUN apt install -y\
-  mesa-utils \
-  x11-apps
+    mesa-utils \
+    x11-apps
 
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -141,9 +130,9 @@ SHELL ["/bin/bash", "-c"]
 
 RUN ln -s /usr/local/src/robotology-superbuild/build/install/share/bash-completion/completions/yarp /etc/bash_completion.d/ && \
     echo $' \n\
-source /usr/local/src/robotology-superbuild/build/install/share/robotology-superbuild/setup.sh \n\
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then \n\
-   . /etc/bash_completion \n\
-fi ' >> $HOME/.bashrc
+    source /usr/local/src/robotology-superbuild/build/install/share/robotology-superbuild/setup.sh \n\
+    if [ -f /etc/bash_completion ] && ! shopt -oq posix; then \n\
+    . /etc/bash_completion \n\
+    fi ' >> $HOME/.bashrc
 
 COPY icubGazeboApp.xml /usr/local/src/robotology-superbuild/build/install/share/yarp/applications/
