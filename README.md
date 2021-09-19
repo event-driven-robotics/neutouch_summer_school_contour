@@ -171,7 +171,7 @@ The controller is accessible within the `ContourFollowingModule::updateModule()`
 - the responsiveness of the controller (i.e. how fast it will react to the references you sent) is decided using the method `setTrajTime()`. The smaller the trajectory time, the faster the response. The default trajectory time for the exercise is decided within `ContourFollowingModule::configure()`
 
 ```
-bool updateModule()
+bool configure(ResourceFinder &rf)
 {
   ...
   cartControl->setTrajTime(1.0);
