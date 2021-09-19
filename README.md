@@ -115,7 +115,7 @@ make
 ```
 
 - The resulting executable `contour_following` can be run using `./contour_following`. Please first run the simulation environment, otherwise the executable will not be able to connect to the robot.
-- The module will first close all the fingers, except the right index, and then will move the right hand to an initial pose. After that, the code within `ContourFollowingModule::updateModule()" will be executed periodically.
+- The module will first close all the fingers, except the right index, and then will move the right hand to an initial pose. After that, the code within `ContourFollowingModule::updateModule()` will be executed periodically.
 
 </details>
 
