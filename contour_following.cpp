@@ -275,11 +275,13 @@ public:
         // Open and connect skinEventsPort for reading skin events
         const char *skinEventsPortName = "/skin_events:i";
         skinEventsPort.open(skinEventsPortName);
-        if (!skinEventsPort.open(skinEventsPortName)) {
+        if (!skinEventsPort.open(skinEventsPortName))
+        {
             yError() << "Port could not open";
             return false;
         }
-        if (!rpcServer.open(getName("/rpc"))) {
+        if (!rpcServer.open(getName("/rpc")))
+        {
             yError() << "Could not open rpc port";
             return false;
         }
