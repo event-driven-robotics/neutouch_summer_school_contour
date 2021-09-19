@@ -162,6 +162,13 @@ Each taxel is associated with an ID as follows:
 
 <p align="center"><img src="assets/taxels_ids.png" alt="" height=200px/></p>
 
+You can visualize the pressure of the taxel with id `<ID>` as follows. From **within the docker** run:
+```console
+   yarpscope --remote /taxels_output:o --index <ID> --no-persistent
+```
+<p align="center"><img src="assets/scope.gif" alt="" height=200px/></p>
+
+
 You can access to the pressure of each taxel as follows:
 
 ```
