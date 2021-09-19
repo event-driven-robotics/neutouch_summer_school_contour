@@ -1,15 +1,3 @@
-# this is our first build stage, it will not persist in the final image
-FROM ubuntu:20.04 as intermediate
-
-RUN apt update && \
-    apt install -y \
-    git \
-    openssh-client \
-    gedit
-
-RUN cd /usr/local/src && \
-    git clone https://github.com/2103simon/icub_haptic_exploration_environment.git
-
 FROM ubuntu:20.04
 
 RUN dpkg --add-architecture i386 && \
@@ -116,9 +104,8 @@ RUN cd /usr/local/src && \
     cmake .. && \
     make -j `nproc`
 
-COPY --from=intermediate /usr/local/src/icub_haptic_exploration_environment /usr/local/src/icub_haptic_exploration_environment 
-
-RUN cd /usr/local/src/icub_haptic_exploration_environment && \
+RUN cd /usr/local/src && \
+    git clone https://github.com/2103simon/icub_haptic_exploration_environment.git && \
     mkdir build && \
     cd build/ && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/src/robotology-superbuild/build/install && \
@@ -134,5 +121,8 @@ RUN ln -s /usr/local/src/robotology-superbuild/build/install/share/bash-completi
     if [ -f /etc/bash_completion ] && ! shopt -oq posix; then \n\
     . /etc/bash_completion \n\
     fi ' >> $HOME/.bashrc
+
+RUN apt install -y \
+    gedit
 
 COPY icubGazeboApp.xml /usr/local/src/robotology-superbuild/build/install/share/yarp/applications/
