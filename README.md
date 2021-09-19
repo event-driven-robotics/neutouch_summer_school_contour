@@ -116,7 +116,10 @@ The resulting executable `contour_following` can be run using `./contour_followi
 
 <details><summary>Click to open</summary>
 
-#### Code structure
+### Code structure
+
+<details>
+<summary>Click to open</summary>
 
 The code is implemented as a standalone class `ContourFollowingModule`:
 
@@ -126,7 +129,12 @@ The code is implemented as a standalone class `ContourFollowingModule`:
 
 > Bear in mind that the method is called periodically and goes out of scope at the end of each run. Should you need to store any data outside of the scope of a single method update, you will need to store it in a **class member variable**.
 
-#### Sensors input
+</details>
+
+### Sensors input
+
+<details>
+<summary>Click to open</summary>
 
 Sensors simulate the behavior of the iCub humanoid robot tactile sensors that are present on the fingertips. Each fingertip is equipped with 12 taxels that provide a measure of the pressure exerted on them.
 
@@ -163,7 +171,12 @@ bool updateModule()
 }
 ```
 
-#### Robot control
+</details>
+
+### Robot control
+
+<details>
+<summary>Click to open</summary>
 
 In order to move the fingertip of the right index finger of the robot, you will be using the iCub Cartesian Interface ([high level description](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)).
 
@@ -178,11 +191,13 @@ bool configure(ResourceFinder &rf)
   ...
 }
 ```
-- the reference frame that is commanded by the controller is usually the iCub hand palm (check the figure [here](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)). For your convenience, we moved the reference frame to the right index fingertip, so that you can command its pose directly. **Bear in mind that the frame orientation has not been changed instead.**
+- the reference frame that is commanded by the controller is usually the iCub hand palm (check the figure [here](https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/img/RightHandCADRefFrame.jpg)). For your convenience, we moved the reference frame to the right index fingertip, so that you can command its pose directly. **Bear in mind that the frame orientation has not been changed instead.**
 
 Useful methods we suggest to check out on the [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html) are :
 - `goToPoseSync` which moves the end-effector to a given 6D pose (and does not return until the motion is completed)
 - `goToPose` same as above, but does not wait (useful for streaming commands to the controller)
 - `setTaskVelocities` allows the user sending a 6D velocity reference (that gets integrated and commanded internally via `goToPose`)
+
+</details>
 
 </details>
