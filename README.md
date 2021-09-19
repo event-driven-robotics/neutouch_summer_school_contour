@@ -176,10 +176,10 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
           // However, in the current implementation a contact always contains a single taxel
 
           // To get the the ID of the taxel use
-          // const int taxel_id = skin_contact.getTaxelList()[0];
+          const int taxel_id = skin_contact.getTaxelList()[0];
 
           // To get the pressure associated to it use
-          // const double pressure = skin_contact.getPressure();
+          const double pressure = skin_contact.getPressure();
         }
       }
   }
