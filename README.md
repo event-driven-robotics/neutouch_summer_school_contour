@@ -136,7 +136,7 @@ The resulting executable `contour_following` can be run using `./contour_followi
 
 <details><summary>Click to open</summary>
 
-### Code structure
+#### Code structure
 
 <details>
 <summary>Click to open</summary>
@@ -151,7 +151,7 @@ The code is implemented as a standalone class `ContourFollowingModule`:
 
 </details>
 
-### Sensors input
+#### Sensors input
 
 <details>
 <summary>Click to open</summary>
@@ -162,7 +162,7 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
 
 <p align="center"><img src="assets/taxels_ids.png" alt="" height=200px/></p>
 
-- You can visualize the pressure of the taxel with id `<ID>` as follows. From **within the docker** run:
+- You can visualize the pressure of the taxel with id `<ID>` as follows if the `contour_following` module is running. From **within the docker** run:
   ```console
    yarpscope --remote /taxels_output:o --index <ID> --no-persistent
   ```
@@ -200,7 +200,7 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
 
 </details>
 
-### Robot control
+#### Robot control
 
 <details>
 <summary>Click to open</summary>
