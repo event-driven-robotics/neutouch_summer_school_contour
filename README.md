@@ -94,7 +94,7 @@ After that, you can restart the simulation environment and play with the new sha
 
 <details><summary>Click to open</summary>
 
-We provide a starting point for you in the C++ file [contour_following.cpp](contour_following.cpp). The code will initialize the [iCub Cartesian controller]() that you can use to send 6D pose *(or velocity)* references (both Cartesian position and orientation) to the right index fingertip.
+We provide a starting point for you in the C++ file [contour_following.cpp](contour_following.cpp). The code will initialize the [iCub Cartesian controller](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) that you can use to send 6D pose *(or velocity)* references (both Cartesian position and orientation) to the right index fingertip.
 
 **You can edit the source file locally from your OS using your favourite editor as the repository has been cloned outside the docker container.** In order to build the code, instead, you should act within the container as follows.
 
