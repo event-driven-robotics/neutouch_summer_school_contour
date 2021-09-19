@@ -7,7 +7,7 @@
 
 # Instructions
 
-In this exercise, we challenge you to design a controller to **follow a contour using the right index fingertip** of the [iCub humanoid robot](http://gazebosim.org/) in simulation. The adopted platform is [Gazebo](http://gazebosim.org/) where both the robot and **suitable tactile sensors** are simulated. We provide a full environment to execute the exercise via a Docker image.
+In this exercise, we challenge you to design a controller to **follow a contour using the right index fingertip** of the [iCub humanoid robot](https://icub.iit.it) in simulation. The adopted platform is [Gazebo](http://gazebosim.org/) where both the robot and **suitable tactile sensors** are simulated. We provide a full environment to execute the exercise via a Docker image.
 
 ### Summary
 - [How to install the software](#how-to-install-the-software)
