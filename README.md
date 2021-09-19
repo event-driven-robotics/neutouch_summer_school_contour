@@ -116,7 +116,7 @@ The resulting executable `contour_following` can be run using `./contour_followi
 
 <details><summary>Click to open</summary>
 
-#### Code structure
+### Code structure
 
 The code is implemented as a standalone class `ContourFollowingModule`:
 
@@ -126,7 +126,7 @@ The code is implemented as a standalone class `ContourFollowingModule`:
 
 > Bear in mind that the method is called periodically and goes out of scope at the end of each run. Should you need to store any data outside of the scope of a single method update, you will need to store it in a **class member variable**.
 
-#### Sensors input
+### Sensors input
 
 Sensors simulate the behavior of the iCub humanoid robot tactile sensors that are present on the fingertips. Each fingertip is equipped with 12 taxels that provide a measure of the pressure exerted on them.
 
@@ -163,7 +163,7 @@ bool updateModule()
 }
 ```
 
-#### Robot control
+### Robot control
 
 In order to move the fingertip of the right index finger of the robot, you will be using the iCub Cartesian Interface ([high level description](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)).
 
