@@ -18,7 +18,7 @@ RUN touch /root/.ssh/known_hosts
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 RUN cd /usr/local/src && \
-    git clone git@github.com:2103simon/icub_haptic_exploration_environment.git
+    git clone https://github.com/2103simon/icub_haptic_exploration_environment.git
 
 
 FROM ubuntu:20.04
