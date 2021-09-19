@@ -103,8 +103,8 @@ Open a terminal **inside the container** and run:
 ```console
 cd /neutouch_summer_school_contour
 mkdir build
-cmake ../
 cd build
+cmake ../
 make
 ```
 
