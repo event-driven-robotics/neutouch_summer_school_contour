@@ -166,7 +166,7 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
   ```console
    yarpscope --remote /taxels_output:o --index <ID> --no-persistent
   ```
-  <p align="center"><img src="assets/scope.gif" alt="" height=200px/></p>
+  <p align="center"><img src="assets/scope.gif" alt="" height=300px/></p>
 
 
 - You can access to the pressure of each taxel as follows:
