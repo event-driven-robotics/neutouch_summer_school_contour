@@ -32,6 +32,7 @@ class ContourFollowingModule : public RFModule
 
 private:
     BufferedPort<iCub::skinDynLib::skinContactList> skinEventsPort;
+    BufferedPort<yarp::sig::Vector> taxelsOutputPort;
     // Cartesian control interfaces
     PolyDriver cartDriver;
     ICartesianControl *cartControl;
@@ -287,6 +288,13 @@ public:
         }
         Network::connect("/right_hand/skinManager/skin_events:o", skinEventsPortName);
 
+        // Open output port for taxels pressure debugging
+        if (!taxelsOutputPort.open("/taxels_output:o"))
+        {
+            yError() << "Could not taxels output port";
+            return false;
+        }
+
         // Initialize control boards
         if (!openDrivers()) return false;
         home();
@@ -369,12 +377,35 @@ public:
         return true;
     }
 
+    // Send taxels pressure to output port
+    void sendTaxelsOutput(iCub::skinDynLib::skinContactList* list)
+    {
+        yarp::sig::Vector& output = taxelsOutputPort.prepare();
+        output.resize(12);
+        output.zero();
+
+        if (list != nullptr)
+        {
+            for (const auto& contact : *list)
+            {
+                const int id = contact.getTaxelList()[0];
+                if (id < 12)
+                    output[id] = contact.getPressure();
+            }
+        }
+
+        taxelsOutputPort.write();
+    }
+
     // Synchronous update every getPeriod() seconds
     bool updateModule()
     {
 
         //Reading skin events
         iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
+
+        // Please do not remove this line
+        sendTaxelsOutput(input);
 
         if (input != nullptr)
         {
