@@ -221,9 +221,9 @@ bool configure(ResourceFinder &rf)
 - the reference frame that is commanded by the controller is usually the iCub hand palm (check the figure [here](https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/img/RightHandCADRefFrame.jpg)). For your convenience, we moved the reference frame to the right index fingertip, so that you can command its pose directly. **Bear in mind that the frame orientation has not been changed instead.**
 
 Useful methods we suggest to check out on the [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html) are :
-- `goToPoseSync` which moves the end-effector to a given 6D pose (and does not return until the motion is completed)
-- `goToPose` same as above, but does not wait (useful for streaming commands to the controller)
-- `setTaskVelocities` allows the user sending a 6D velocity reference (that gets integrated and commanded internally via `goToPose`)
+- `[goToPoseSync](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html#a069f1792bb8b4)` which moves the end-effector to a given 6D pose (and does not return until the motion is completed)
+- `[goToPose](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html#a069f1792bb8b45f521cb4fa9d9abc406)` same as above, but does not wait (useful for streaming commands to the controller)
+- `[setTaskVelocities](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html#a3e28664529fafbe051bce0270a2d510d)` allows the user sending a 6D velocity reference (that gets integrated and commanded internally via `goToPose`)
 
 </details>
 
