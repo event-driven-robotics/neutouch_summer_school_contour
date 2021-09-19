@@ -1,163 +1,188 @@
-Contour following with iCub
-======================
+<p align="center">
+    <h1 align="center">
+        NeuTouch Summer School 2021<br>
+        Contour following with iCub
+    </h1>
+</p>
 
-Contour following poses no challenge to us as humans as we do it instinctively with no effort. But in robotics, it requires a lot of effort. On the one hand, the input has to be processed in a meaningful way, on the other hand, motor control has to be executed according to such input. This close loop between sensory read-out and action control is still troublesome especially when it relies on tactile information only.
-To tackle this we have designed a contour following task in different stages of complexity starting from continuous 2d structures to challenging 3d structures. The humanoid robot [iCub](https://www.iit.it/web/icub) implemented in the simulation environment [gazebo](http://gazebosim.org/) and equipped with [tactile sensors](http://wiki.icub.org/wiki/Tactile_sensors_(aka_Skin)) in the fingertip and palm serves as our object of research. More about the sensors, there placing and implementation you can find [here](https://github.com/2103simon/icub_haptic_exploration_environment). The simulation environment can be easily accessed using [docker](https://www.docker.com/). For that, we have prepared a ready-to-use [docker image](https://hub.docker.com/repository/docker/2103simon/contour_following).
+# Instructions
+
+In this exercise, we challenge you to design a controller to **follow a contour using the right index fingertip** of the [iCub humanoid robot](https://icub.iit.it) in simulation. The adopted platform is [Gazebo](http://gazebosim.org/) where both the robot and **suitable tactile sensors** are simulated. We provide a full environment to execute the exercise via a Docker image.
+
+### Summary
+- [How to install the software](#how-to-install-the-software)
+- [How to start the simulation environment](#how-to-start-the-simulation-environment)
+- [How to code and build the controller](#how-to-code-and-build-the-controller)
+- [Useful tips](#useful-tips)
 
 
-### The task
+### How to install the software
+<details>
+<summary>Click to open</summary>
 
-The robot will always start at the top right corner of the objects with no contact with the contours. Your task is to give iCub the ability to follow the different contours, first in 2d. Following the circle for instance will be the easiest task as it is continuous and has no abrupt changes. The triangle otherwise includes very sharp edges and the robot needs to adapt its movement fast and correctly to keep track. At least we have included an object with crossing contours to test your solutions on sustainability.
+1. Clone this repository:
+    ```console
+    git clone https://github.com/event-driven-robotics/neutouch_summer_school_contour.git
+    ```
+1. Pull the docker image:
+    ```console
+    docker pull 2103simon/contour_following:latest
+    ```
+1. Create a docker container:
+    ```console
+    cd neutouch_summer_school_contour
+    xhost +
+    docker run -it --name contour_following \
+               -e DISPLAY=$DISPLAY \
+               -v /dev/dri:/dev/dri \
+               -v $PWD:/neutouch_summer_school_contour \
+               -v /tmp/.X11-unix:/tmp/.X11-unix \
+               2103simon/contour_following:latest
+    ```
+    > Note: it is important to `cd` inside the cloned repository `neutouch_summer_school_contour`in order to create the container succesfully using the command above (otherwise `$PWD` will not contain the correct path.)
 
-For those who master the first challange we have inlcuded the 3d objects. Now it is not sufficient to rely on the spacial component (e.g. which sensor measures the force), but the amount of force gets an important feature to keep contact. Here again the difficulty is wide spread from continues, wavelike structures to some with sharp edges and crossing contours. The 3d objects are similar to the 2d with just adding depth dependencies on top. 
-
-
-2d objects | 2.5d objects
-:---------:|:------------:
-![2d_objects](assets/2d_objects.png)  | ![2_5d_objects](assets/2_5d_objects.png)
-
-# Getting started
-
-### What is Docker?
-
-Docker provides a simple and effective way to share and maintain your development environment. Unlike virtual machines the Docker containers share the kernel with the host, but runs processes isolated from the rest of the system using the files contained in the image. The image is built using a Dockerfile, which is a set of instructions that define the base image (i.e. `ubuntu:bionic`), and eventual additional packages to be installed, environment variables to be set, config files to be modified, etc.
-
-### Nomenclature
-
-* **Image**: archive containing all the necessary files to run your containers. Multiple containers can be run from the same image.
-* **Container**: active instance of an image. This is where you can run your applications and do your work.
-* **Dockerfile**: file containing all the instructions to build your image.
-* **Build**: process of creation of the image starting from a Dockerfile.
-* **Run**: process of creation of a container which runs on top of an image.
-
-### Docker installation
-
-Please follow the instructions at this [link](https://docs.docker.com/engine/install/) to install Docker on your computer. We recommend using a linux distribution of your choice. Also it is advisable to have a computer equipped with a Intel/Nvidia GPU to run the simulator.
-
-To obtain NVIDIA support within the container, you must first install the `nvidia-container-runtime` following the instruction at this [link](https://github.com/NVIDIA/nvidia-container-runtime).
-
-In order to run docker commands without sudo, once the installation is complete you can run the following command 
-
-```bash
-sudo usermod -aG docker $USER
-```
-
-as explained [here](https://docs.docker.com/engine/install/linux-postinstall/). For this change to take place you will have to logout and back in. This can easily achieved rebooting your computer. To test your installation you should now be able to run 
-
-```bash
-docker run hello-world
-```
-
- ## Useful commands 
-
-  * `docker run -it --name <CONTAINER_NAME> <IMAGE_NAME>` to run a container in interactive mode.
-  * `docker ps -a` to obtain the list of your containers.
-  * `docker images` to obtain the list of your images.
-  * `docker exec -it <CONTAINER_NAME> bash` to run a bash inside a container.
-  * `docker build [OPTIONS] PATH | URL | -` to build Docker images from a Dockerfile. 
-  * `docker rmi <IMAGE_NAME>`to remove an image. **NOTE**: all containers and images based on the image to remove must be removed first. 
-  * `docker start <CONTAINER_NAME>`to start a container.
-  * `docker stop <CONTAINER_NAME>`to stop a container.
-  * `docker rm <CONTAINER_NAME>`to remove a container. **NOTE**: container must be stopped first.
-  
-### Running the image on Linux
-
-After the installation you can run the image using the following command:
-
-```bash
-docker run -it --name contour_following \
-           -v /tmp/.X11-unix/:/tmp/.X11-unix \
-           -e DISPLAY=unix$DISPLAY \
-           2103simon/contour_following:latest
-```
-
-If you want to use the primary graphic card on your system, typically Intel, within the container run the following:
-```bash
-docker run -it --name contour_following \
-            -v /tmp/.X11-unix/:/tmp/.X11-unix \
-            -e DISPLAY=$DISPLAY \
-            -v /dev/dri:/dev/dri \
-            2103simon/contour_following:latest 
-```
-
-To use NVIDIA GPU specifically, please use instead:
-
-```bash
-docker run -it --name contour_following \
-           -v /tmp/.X11-unix/:/tmp/.X11-unix \
-           -e DISPLAY=unix$DISPLAY \
-           -v /dev/:/dev \
-           --runtime=nvidia \
-           -e NVIDIA_DRIVER_CAPABILITIES=graphics \
-           2103simon/contour_following:latest
-```
-
-For further information about the meaning of each option please refer to the official documentation at this [link](https://docs.docker.com/engine/reference/run/).
-
-Once you run the container you will enter a bash in a system which is isolated from the rest of your machine. In there you will find the typical linux file system, and all the dependencies, libraries, which will be used during the workshop already installed for you. 
-
-The above commands also enable screen forwarding. For it to properly work you need to authorize docker to run GUI on the XServer running the following command on your host machine (outside the container):
-
-```bash
-xhost local:docker
-```
-This command needs to be run on every reboot. To avoid that and permanently authorize docker you can add the following lines to the `/etc/profile` file:
-
-```bash
-if [ "$DISPLAY" != "" ]
-then
- xhost local:docker
-fi
-```
-
-After closing the terminals, you can always access a previously run container with:
-```bash
-docker start contour_following
+Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**):
+```console
 docker exec -it contour_following bash
 ```
 
-To avoid typing long and hard to memorize commands we have provided a simple set of commands that you can source from your `~/.bashrc`. To do it download the file available in this repo at `docker/bashrc_docker` then add the following lines to your bashrc:
-
-```bash
-PATH_TO_CODE=/path/to/code
-PATH_TO_DATA=/path/to/data
-PATH_TO_APP=/path/to/app
-source /path/to/bashrc_docker
+If for any reason the container is not running (you will receive an error in such case), it can be started again using:
+```console
+docker start contour_following
 ```
-where you need to specify the path to the `bashrc_docker` file you just downloaded and, optionally but strongly recommended, the path to where you keep your code, your data and your applications. These three directories will be shared with the running container so that you can work on the code that is stored in your host machine (and not risk to lose your work), get the data you need to run the code, and eventually run some applications (i.e. IDEs) from within your container. You will find them inside the container at `/data`, `/code`, `/apps`.
+</details>
 
-After restarting the bash, you will have available on your command line three functions with auto-complete support:
+### How to start the simulation environment
+<details>
+<summary>Click to open</summary>
 
-* `run_docker <IMAGE_NAME> <CONTAINER_NAME> [ADDITIONAL OPTIONS]`
-Runs an image into a specified container with X server forwarding for running GUIs, and binds three directories from your host system as specified above.
-* `run_docker_opengl <IMAGE_NAME> <CONTAINER_NAME> [ADDITIONAL OPTIONS]`
-Adds the Nvidia and OpenGL specific options to `run_docker`.
-* `start_docker <CONTAINER_NAME>`
-Starts and executes a bash on the specified container (must be run first).
+1. Open one terminal **inside the container** and run the YARP server using `yarpserver --write`
+1. Open a second terminal **inside the container** and run the YARP manager using `yarpmanager`:
+   1. Select the application `iCub_Contour_following`
+   1. Press on the green button `Run all`
+   <p align="center"><img src="assets/yarpmanager.png" alt="" height=200px/></p>
+   1. After some seconds, you should see the following environment:
+   <p align="center"><img src="assets/env.png" alt="" height=300px/></p>
 
-if you have "_completion_loader: command not found" error, then make sure (or add otherwise) that the command line "source /etc/profile.d/bash_completion.sh" appears uncommented before the source of the .basrch_docker file inside the .bashrc.
+Should you need to stop the environment, you can use the red button `Stop all`. If `gazebo` does not close after a while, you can kill it using `killall -9 gzserver gzclient` (even outside the docker container).
 
-### Using the container
+#### How to Change the contour
 
-The whole infrastructure we will be using for this task depends on the [YARP](https://www.yarp.it/git-master/) middleware (already installed in the container). The latter puts in communication several modules potentially spanned across several machines onto the same network. The modules communicate via ports that, once connected, will stream information through a server which must run in the background all the time. Please refer to [link](https://www.yarp.it/git-master/tutorials.html) for a series of tutorials on how to implement such communication. You will also find similar snippets in the starting code available in this repo. 
+We provide several contours you can use in the exercise. They can be listed [here](https://github.com/2103simon/icub_haptic_exploration_environment/tree/master/environment/models/contour_following). To change the contour please proceed as follows:
 
-In order to get everything started you must then run the container, start a yarpserver and from a separate terminal open another bash inside the container and run the yarpmanager. The latter is a graphical tool that allows to start and connect multiple modules with one click. We have already prepared an application called iCub_Contour_following that launches the simulator, a logger and a motor GUI which allows to see the status and move the joints of the robot in simulation. See GIF below to get an idea of this pipeline.
+1. Visualize the contour to see its shape by opening in your browser the .STL mesh file. E.g. for the shape `circle_2_5d` try to visualize [circle_2_5d.stl](https://github.com/2103simon/icub_haptic_exploration_environment/blob/master/environment/models/contour_following/cf_circle_2_5d/circle_2_5d.stl)
 
-![app_start](assets/app_start.gif)
+1. Stop the simulation if running
 
-To start the development we recommend to keep this repository stored in your code directory (see section above for description of the folder convention) and open it with your favorite IDE. There are several methods to allow the development inside the container. In the next GIF we demonstrate how to launch CLion from within the container, providing it access to the all files and libraries stored and installed in it.  
+1. Run the following from within the container:
+```console
+   cd /usr/local/src/icub_haptic_exploration_environment/build
+   gedit ../worlds/he_scenario.sdf
+```
+1. Change line `40` to `model://cf_<name>` where `<name>` is e.g. `circle_2_5d`
 
-![open_clion](assets/open_clion.gif)
+1. Change line `51` to `to_be_followed::<name>::<name>_root_link`
 
-Another option would be to use the docker integration plugin available for visual studio code. You can find instructions on how to use it at this [link](https://code.visualstudio.com/docs/remote/containers).
+1. Save and close `gedit`
 
-The starting code in `contour_following.cpp` we provide already contains the necessary to connect to the robot, move it to a starting position and read in a loop the tactile sensor readout. There are markers in the file that will tell you where you will have to add your contribution.
+1. Run `make install`
 
-### Usefull functions to controll the robot
-goToPose(position, orientation, velocity): the robot will move to the given position with a set orientation and veocity. After reaching the pose new commands can be send.
+After that, you can restart the simulation environment and play with the new shape.
+</details>
 
-goToPoseSync(position, orientation, velocity): the robot will again move to the given position with a set orientation and veocity, but give constant feedback and can hande subsequently new commands.
+### How to code and build the controller
 
-setTaskVelocities(position + velocity, orientation + velocity): allows to explicitly set the movement velocity.
+<details><summary>Click to open</summary>
 
-setTrackingMode = true: keeps the robot engaged even after reaching the final destination.
+We provide a starting point for you in the C++ file [contour_following.cpp](contour_following.cpp). The code will initialize the [iCub Cartesian controller](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) that you can use to send 6D pose *(or velocity)* references (both Cartesian position and orientation) to the right index fingertip.
+
+**You can edit the source file locally from your OS using your favourite editor as the repository has been cloned outside the docker container.** In order to build the code, instead, you should act within the container as follows.
+
+Open a terminal **inside the container** and run:
+
+```console
+cd /neutouch_summer_school_contour
+mkdir build
+cd build
+make
+```
+
+The resulting executable `contour_following` can be run using `./contour_following`.
+> Please first run the simulation environment, otherwise the executable will not be able to connect to the robot.
+
+</details>
+
+### Useful tips
+
+<details><summary>Click to open</summary>
+
+#### Code structure
+
+The code is implemented as a standalone class `ContourFollowingModule`:
+
+-  The module gets configured within the method `ContourFollowingModule::configure()`.
+
+-  A periodic method is called automatically every `ContourFollowingModule::getPeriod()` seconds, namely `ContourFollowingModule::updateModule()`. This is the place where you can add your code.
+
+> Bear in mind that the method is called periodically and goes out of scope at the end of each run. Should you need to store any data outside of the scope of a single method update, you will need to store it in a **class member variable**.
+
+#### Sensors input
+
+Sensors simulate the behavior of the iCub humanoid robot tactile sensors that are present on the fingertips. Each fingertip is equipped with 12 taxels that provide a measure of the pressure exerted on them.
+
+Each taxel is associated with an ID as follows:
+
+<p align="center"><img src="assets/taxels_ids.png" alt="" height=200px/></p>
+
+You can access to the pressure of each taxel as follows:
+
+```
+...
+// This is an excerpt of the contour_following.cpp file
+...
+bool updateModule()
+{
+    iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
+
+    // input is a std::vector of iCub::skinDynLib::skinContact
+
+    if (input != nullptr)
+    {
+      for (const iCub::skinDynLib::skinContact& skin_contact : input)
+      {
+        // Each contact might contain several taxels activations
+        // However, in the current implementation a contact always contains a single taxel
+
+        // To get the the ID of the taxel use
+        // const int taxel_id = skin_contact.getTaxelList()[0];
+
+        // To get the pressure associated to it use
+        // const double pressure = skin_contact.getPressure();
+      }
+    }
+}
+```
+
+#### Robot control
+
+In order to move the fingertip of the right index finger of the robot, you will be using the iCub Cartesian Interface ([high level description](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)).
+
+The controller is accessible within the `ContourFollowingModule::updateModule()` using the class member variable `cartControl` of type `ICartesianControl*`.
+- the responsiveness of the controller (i.e. how fast it will react to the references you sent) is decided using the method `setTrajTime()`. The smaller the trajectory time, the faster the response. The default trajectory time for the exercise is decided within `ContourFollowingModule::configure()`
+
+```
+bool configure(ResourceFinder &rf)
+{
+  ...
+  cartControl->setTrajTime(1.0);
+  ...
+}
+```
+- the reference frame that is commanded by the controller is usually the iCub hand palm (check the figure [here](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)). For your convenience, we moved the reference frame to the right index fingertip, so that you can command its pose directly. **Bear in mind that the frame orientation has not been changed instead.**
+
+Useful methods we suggest to check out on the [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html) are :
+- `goToPoseSync` which moves the end-effector to a given 6D pose (and does not return until the motion is completed)
+- `goToPose` same as above, but does not wait (useful for streaming commands to the controller)
+- `setTaskVelocities` allows the user sending a 6D velocity reference (that gets integrated and commanded internally via `goToPose`)
+
+</details>

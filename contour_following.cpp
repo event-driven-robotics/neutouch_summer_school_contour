@@ -17,16 +17,18 @@
 #include <yarp/dev/IPositionControl.h>
 #include <yarp/dev/CartesianControl.h>
 
-// Skin simulation libraries
-#include <gazebo/Skin.hh>
+// iCub libraries
 #include <iCub/iKin/iKinFwd.h>
+#include <iCub/skinDynLib/skinContact.h>
+#include <iCub/skinDynLib/skinContactList.h>
 
 using namespace yarp::os;
 using namespace yarp::dev;
 using namespace yarp::sig;
 using namespace yarp::math;
 
-class ContourFollowingModule : public RFModule, public Thread {
+class ContourFollowingModule : public RFModule
+{
 
 private:
     BufferedPort<iCub::skinDynLib::skinContactList> skinEventsPort;
@@ -61,7 +63,8 @@ private:
     Vector orientation_0;
 private:
 
-    void closeHand(IPositionControl *posControl) {
+    void closeHand(IPositionControl *posControl)
+    {
         posControl->setRefSpeeds(std::vector<double>(15, 30).data());
         std::vector<int> fingerjoints = {7, 11, 12, 13, 14, 15};
         std::vector<double> fingerClosedPos = {60, 0, 2, 82, 140, 230};
@@ -70,7 +73,8 @@ private:
         bool done = false;
         double now = Time::now();
 
-        while (!done && Time::now() - now < wait_tmo) {
+        while (!done && Time::now() - now < wait_tmo)
+        {
             sleep(1);
             posControl->checkMotionDone(&done);
         }
@@ -81,26 +85,30 @@ private:
 
         now = Time::now();
         done = false;
-        while (!done && Time::now() - now < wait_tmo) {
+        while (!done && Time::now() - now < wait_tmo)
+        {
             sleep(1);
             posControl->checkMotionDone(&done);
         }
     }
 
-    void parseParams(const ResourceFinder &rf) {
+    void parseParams(const ResourceFinder &rf)
+    {
         setName((rf.check("name", Value("/contour_following")).asString()).c_str());
         robot = rf.check("robot", Value("icubSim")).asString();
         arm = rf.check("arm", Value("right_arm")).asString();
         period = rf.check("period", Value(0.01)).asDouble();
     }
 
-    bool openDrivers() {
+    bool openDrivers()
+    {
         // Setting up device for moving the arm in cartesian space
         Property options_arm;
         options_arm.put("device", "cartesiancontrollerclient");
         options_arm.put("remote", "/" + robot + "/cartesianController/" + arm);
         options_arm.put("local", getName() + "/" + arm);
-        if (!cartDriver.open(options_arm)) {
+        if (!cartDriver.open(options_arm))
+        {
             return false;
         }
 
@@ -110,13 +118,16 @@ private:
         optionsRightArm.put("device", "remote_controlboard");
         optionsRightArm.put("local", getName() + "/controlboard/right_arm");
         optionsRightArm.put("remote", "/" + robot + "/right_arm");
-        if (drvRightArm.open(optionsRightArm)) {
-            if (!drvRightArm.view(posControlRightArm) || !drvRightArm.view(controlModeRightArm)) {
+        if (drvRightArm.open(optionsRightArm))
+        {
+            if (!drvRightArm.view(posControlRightArm) || !drvRightArm.view(controlModeRightArm))
+            {
                 std::cout << "Could not view driver" << std::endl;
                 return false;
             }
-
-        } else {
+        }
+        else
+        {
             std::cout << "Could not open remote controlboard" << std::endl;
             return false;
         }
@@ -125,13 +136,16 @@ private:
         optionsLeftArm.put("device", "remote_controlboard");
         optionsLeftArm.put("local", getName() + "/controlboard/left_arm");
         optionsLeftArm.put("remote", "/" + robot + "/left_arm");
-        if (drvLeftArm.open(optionsLeftArm)) {
-            if (!drvLeftArm.view(posControlLeftArm) || !drvLeftArm.view(controlModeLeftArm)) {
+        if (drvLeftArm.open(optionsLeftArm))
+        {
+            if (!drvLeftArm.view(posControlLeftArm) || !drvLeftArm.view(controlModeLeftArm))
+            {
                 std::cout << "Could not view driver" << std::endl;
                 return false;
             }
-
-        } else {
+        }
+        else
+        {
             std::cout << "Could not open remote controlboard" << std::endl;
             return false;
         }
@@ -140,13 +154,16 @@ private:
         optionsHead.put("device", "remote_controlboard");
         optionsHead.put("local", getName() + "/controlboard/head");
         optionsHead.put("remote", "/" + robot + "/head");
-        if (drvHead.open(optionsHead)) {
-            if (!drvHead.view(posControlHead) || !drvHead.view(controlModeHead)) {
+        if (drvHead.open(optionsHead))
+        {
+            if (!drvHead.view(posControlHead) || !drvHead.view(controlModeHead))
+            {
                 std::cout << "Could not view driver" << std::endl;
                 return false;
             }
-
-        } else {
+        }
+        else
+        {
             std::cout << "Could not open remote controlboard" << std::endl;
             return false;
         }
@@ -155,31 +172,41 @@ private:
         optionsTorso.put("device", "remote_controlboard");
         optionsTorso.put("local", getName() + "/controlboard/torso");
         optionsTorso.put("remote", "/" + robot + "/torso");
-        if (drvTorso.open(optionsTorso)) {
-            if (!drvTorso.view(posControlTorso) || !drvTorso.view(controlModeTorso)) {
+        if (drvTorso.open(optionsTorso))
+        {
+            if (!drvTorso.view(posControlTorso) || !drvTorso.view(controlModeTorso))
+            {
                 std::cout << "Could not view driver" << std::endl;
                 return false;
             }
 
-        } else {
+        }
+        else
+        {
             std::cout << "Could not open remote controlboard" << std::endl;
             return false;
         }
 
-        if (arm == "right_arm") {
+        if (arm == "right_arm")
+        {
             drvRightArm.view(iencs);
             drvRightArm.view(cartControlMode);
-        } else if (arm == "left_arm") {
+        }
+        else if (arm == "left_arm")
+        {
             drvLeftArm.view(iencs);
             drvLeftArm.view(cartControlMode);
-        } else {
+        }
+        else
+        {
             std::cout << "Sorry i only have a left and a right arm" << std::endl;
             return false;
         }
         return true;
     }
 
-    bool moveEndEffectorToFingertip() {
+    bool moveEndEffectorToFingertip()
+    {
         // We are interested in the pose of the index when it is totally open,
         // hence it suffices to provide a 9-dimensional vector of zero vectors
         // except for the first angle indicating the iCub adduction/abduction
@@ -206,7 +233,8 @@ private:
         return true;
     }
 
-    void home() {
+    void home()
+    {
         controlModeRightArm->setControlModes(std::vector<int>(15, VOCAB_CM_POSITION).data());
         controlModeLeftArm->setControlModes(std::vector<int>(15, VOCAB_CM_POSITION).data());
         controlModeHead->setControlModes(std::vector<int>(6, VOCAB_CM_POSITION).data());
@@ -221,7 +249,8 @@ private:
         posControlTorso->positionMove(std::vector<double>{0, 0, 0}.data());
         bool done = false;
         double now = Time::now();
-        while (!done && Time::now() - now < wait_tmo) {
+        while (!done && Time::now() - now < wait_tmo)
+        {
             done = true;
             bool check;
             posControlLeftArm->checkMotionDone(&check);
@@ -238,7 +267,8 @@ private:
 
 public:
 
-    bool configure(ResourceFinder &rf) {
+    bool configure(ResourceFinder &rf)
+    {
 
         parseParams(rf);
 
@@ -258,10 +288,13 @@ public:
         // Initialize control boards
         if (!openDrivers()) return false;
         home();
-        if (arm == "right_arm") {
+        if (arm == "right_arm")
+        {
             controlModeRightArm->setControlModes(std::vector<int>(15, VOCAB_CM_POSITION).data());
             closeHand(posControlRightArm);
-        } else {
+        }
+        else
+        {
             controlModeLeftArm->setControlModes(std::vector<int>(15, VOCAB_CM_POSITION).data());
             closeHand(posControlLeftArm);
         }
@@ -316,14 +349,18 @@ public:
         cartControl->goToPoseSync(x1, orientation_0, 3.0);
         cartControl->waitMotionDone(wait_ping, wait_tmo);
 
-        return Thread::start();
+        return true;
     }
 
-    bool respond(const Bottle &command, Bottle &reply) {
-        if (command.get(0).asString() == "home") {
+    bool respond(const Bottle &command, Bottle &reply)
+    {
+        if (command.get(0).asString() == "home")
+        {
             reply.addString("Going back home");
             home();
-        } else {
+        }
+        else
+        {
             reply.addString("Command not recognized. Available commands: home");
         }
 
@@ -331,41 +368,36 @@ public:
     }
 
     // Synchronous update every getPeriod() seconds
-    bool updateModule() {
+    bool updateModule()
+    {
 
         //Reading skin events
         iCub::skinDynLib::skinContactList *input = skinEventsPort.read(false);
 
         if (input != nullptr)
         {
-            // Tip: iCub::skinDynLib::skinContactList is also a std::vector<iCub::skinDynLib::skinContact>
-            // i.e. a vector of skinContact objects.
-            // The API of iCub::skinDynLib::skinContact can be found at the following URL:
-            // https://robotology.github.io/robotology-documentation/doc/html/classiCub_1_1skinDynLib_1_1skinContact.html
-
             // PUT YOUR CODE HERE
+
+            // See instructions at https://github.com/event-driven-robotics/neutouch_summer_school_contour#useful-tips
         }
 
         return true;
     }
 
-    // Asynchronous update that runs in a separate thread as fast as it can
-    void run() {
-
-        // PUT YOUR CODE HERE
-    }
-
-    double getPeriod() {
+    double getPeriod()
+    {
         return period;
     }
 
-    bool interruptModule() {
+    bool interruptModule()
+    {
         yInfo() << "Interrupting module ...";
         skinEventsPort.interrupt();
         return RFModule::interruptModule();
     }
 
-    bool close() {
+    bool close()
+    {
         yInfo() << "Closing the module...";
         skinEventsPort.close();
         cartControl->stopControl();
@@ -377,7 +409,9 @@ public:
     }
 };
 
-int main(int argc, char *argv[]) {
+
+int main(int argc, char *argv[])
+{
     // Connecting to the yarp server (must be running already)
     Network yarp;
     if (!yarp.checkNetwork(2.0)) {
