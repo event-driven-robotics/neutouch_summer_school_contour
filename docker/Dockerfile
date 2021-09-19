@@ -4,11 +4,11 @@ FROM ubuntu:20.04 as intermediate
 RUN apt update && \
     apt install -y \
     git \
-    openssh-client
+    openssh-client \
+    gedit
 
 RUN cd /usr/local/src && \
     git clone https://github.com/2103simon/icub_haptic_exploration_environment.git
-
 
 FROM ubuntu:20.04
 
