@@ -47,6 +47,8 @@ In this exercise, we challenge you to design a controller to **follow a contour 
     ```
     > Note: it is important to `cd` inside the cloned repository `neutouch_summer_school_contour`in order to create the container succesfully using the command above (otherwise `$PWD` will not contain the correct path.)
 
+If you have problems running the command due to nvidia related issues you might want to look [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit) and follow [this](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit).
+  
 Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**):
 ```console
 docker exec -it contour_following bash
