@@ -78,7 +78,7 @@ Should you need to stop the environment, you can use the red button `Stop all`. 
 
 If you need to pause the simulation, e.g. to save resources, press the backspace on the keyboard (while the focus is on the Gazebo windows) or press the pause button in the Gazebo windows.
 
-<p align="center"><img src="assets/gazebo_pause.png" alt="" height=200px/></p>
+<p align="center"><img src="assets/gazebo_pause.png" alt="" width=800px/></p>
 
 #### How to Change the contour
 
