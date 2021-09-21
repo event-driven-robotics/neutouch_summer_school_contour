@@ -74,6 +74,12 @@ docker start contour_following
 
 Should you need to stop the environment, you can use the red button `Stop all`. If `gazebo` does not close after a while, you can kill it using `killall -9 gzserver gzclient` (even outside the docker container).
 
+#### How to pause the simulation
+
+If you need to pause the simulation, e.g. to save resources, press the backspace on the keyboard (while the focus is on the Gazebo windows) or press the pause button in the Gazebo windows.
+
+<p align="center"><img src="assets/gazebo_pause.png" alt="" height=200px/></p>
+
 #### How to Change the contour
 
 We provide several contours you can use in the exercise. They can be listed [here](https://github.com/2103simon/icub_haptic_exploration_environment/tree/master/environment/models/contour_following). To change the contour please proceed as follows:
