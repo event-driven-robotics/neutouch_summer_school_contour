@@ -343,16 +343,11 @@ public:
         R(1, 1) = 1.;
         R(2, 2) = -1.;
 
-        // Transformation defining the initial angle of the end effector wrt the table
-        // At the link below a detailed documentation on the kinematic chain of the robot
-        // https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/icub-forward-kinematics
-        Matrix impactAngle = euler2dcm(Vector{0, -M_PI / 12, 0});
-
-        // Additional transformation to tilt a bit the hand and avoid the fingers touching the surface
-        Matrix tiltAngle = euler2dcm(Vector{0, -20.0 * M_PI / 180.0, 0});
+        // Transformation to tilt a bit the hand and avoid the fingers touching the surface
+        Matrix tiltAngle = euler2dcm(Vector{0, -35.0 * M_PI / 180.0, 0});
 
         // Evaluate the overall orientation
-        orientation_0 = dcm2axis(tiltAngle * R * impactAngle);
+        orientation_0 = dcm2axis(tiltAngle * R);
 
         cartControl->goToPoseSync(x0, orientation_0, 3.0);
         cartControl->waitMotionDone(wait_ping, wait_tmo);
