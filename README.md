@@ -213,18 +213,15 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
 In order to move the fingertip of the right index finger of the robot, you will be using the iCub Cartesian Interface ([high level description](https://robotology.github.io/robotology-documentation/doc/html/icub_cartesian_interface.html) [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html)).
 
 The controller is accessible within the `ContourFollowingModule::updateModule()` using the class member variable `cartControl` of type `ICartesianControl*`.
-- the initial pose of the hand is commanded using two waypoints `x0` and `x1` within `ContourFollowingModule::configure()`:
+- the initial pose of the hand is commanded within `ContourFollowingModule::configure()`:
 
 ```
 bool configure(ResourceFinder &rf)
 {
    ...
-   yarp::sig::Vector x0{-0.3, 0.0, 0.0};
-   yarp::sig::Vector x1{-0.4, 0.13, -0.1};
+   yarp::sig::Vector x0{-0.4, 0.13, -0.09};
    ...
    cartControl->goToPoseSync(x0, orientation_0, 3.0);
-   cartControl->waitMotionDone(wait_ping, wait_tmo);
-   cartControl->goToPoseSync(x1, orientation_0, 3.0);
    cartControl->waitMotionDone(wait_ping, wait_tmo);
    ...
 }

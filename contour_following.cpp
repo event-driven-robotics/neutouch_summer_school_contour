@@ -334,8 +334,8 @@ public:
 
         // Please refer to link below for detailed description of robot frames
         // https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/icub-forward-kinematics
-        yarp::sig::Vector x0{-0.3, 0.0, 0.0}; // Starting end effector position (0)
-        yarp::sig::Vector x1{-0.4, 0.13, -0.09}; // Starting end effector position (1)
+
+        yarp::sig::Vector x0{-0.4, 0.13, -0.09};
 
         //Rotation from root frame to end effector pointing straight ahead
         Matrix R = zeros(3, 3);
@@ -349,9 +349,8 @@ public:
         // Evaluate the overall orientation
         orientation_0 = dcm2axis(tiltAngle * R);
 
+        // Command the robot
         cartControl->goToPoseSync(x0, orientation_0, 3.0);
-        cartControl->waitMotionDone(wait_ping, wait_tmo);
-        cartControl->goToPoseSync(x1, orientation_0, 3.0);
         cartControl->waitMotionDone(wait_ping, wait_tmo);
 
         return true;
