@@ -335,7 +335,7 @@ public:
         // Please refer to link below for detailed description of robot frames
         // https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/icub-forward-kinematics
         yarp::sig::Vector x0{-0.3, 0.0, 0.0}; // Starting end effector position (0)
-        yarp::sig::Vector x1{-0.4, 0.13, -0.1}; // Starting end effector position (1)
+        yarp::sig::Vector x1{-0.4, 0.13, -0.09}; // Starting end effector position (1)
 
         //Rotation from root frame to end effector pointing straight ahead
         Matrix R = zeros(3, 3);
