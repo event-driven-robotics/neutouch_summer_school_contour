@@ -81,7 +81,7 @@ private:
         }
 
         std::vector<int> thumbjoints = {8, 9, 10};
-        std::vector<double> thumbClosedPos = {37, 27, 103};
+        std::vector<double> thumbClosedPos = {0, 0, 0};
         posControl->positionMove(thumbjoints.size(), thumbjoints.data(), thumbClosedPos.data());
 
         now = Time::now();
@@ -335,7 +335,7 @@ public:
         // Please refer to link below for detailed description of robot frames
         // https://icub-tech-iit.github.io/documentation/icub_kinematics/icub-forward-kinematics/icub-forward-kinematics
         yarp::sig::Vector x0{-0.3, 0.0, 0.0}; // Starting end effector position (0)
-        yarp::sig::Vector x1{-0.3, 0.0, -0.05}; // Starting end effector position (1)
+        yarp::sig::Vector x1{-0.4, 0.13, -0.1}; // Starting end effector position (1)
 
         //Rotation from root frame to end effector pointing straight ahead
         Matrix R = zeros(3, 3);
@@ -349,7 +349,7 @@ public:
         Matrix impactAngle = euler2dcm(Vector{0, -M_PI / 12, 0});
 
         // Additional transformation to tilt a bit the hand and avoid the fingers touching the surface
-        Matrix tiltAngle = euler2dcm(Vector{0, -15.0 * M_PI / 180.0, 0});
+        Matrix tiltAngle = euler2dcm(Vector{0, -20.0 * M_PI / 180.0, 0});
 
         // Evaluate the overall orientation
         orientation_0 = dcm2axis(tiltAngle * R * impactAngle);
