@@ -241,6 +241,7 @@ bool configure(ResourceFinder &rf)
 Useful methods we suggest to check out on the [API](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html) are :
 - [goToPoseSync](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html#a3e6d8ff73db8798b89ff41fb0326771d) which moves the end-effector to a given 6D pose (and does not return until the motion is completed)
 - [goToPose](https://www.yarp.it/latest/classyarp_1_1dev_1_1ICartesianControl.html#a069f1792bb8b45f521cb4fa9d9abc406) same as above, but does not wait (useful for streaming commands to the controller)
+- [getPose](http://www.yarp.it/git-master/classyarp_1_1dev_1_1ICartesianControl.html#acf4e599d1e60bf42b67e3923a323f53b) get the current position and orientation of the end-effector, i.e. the fingertip
 
 Commands `goToPose[Sync]` require, **as second argument**, the orientation of the frame as a 4-dimensional `yarp::sig::Vector` vector containing the axis/angle representation of the rotation. We provided a suitable configuration for the orientation in the variable `orientation_0` (a class member variable) so that you can focus on deciding the position of the fingertip.
 
