@@ -15,10 +15,11 @@ In this exercise, we challenge you to design a controller to **follow a contour 
 
 ### Summary
 - [How to install the software](#how-to-install-the-software)
-- [How to start the simulation environment](#how-to-start-the-simulation-environment)
+- [How to use the simulation environment](#how-to-start-the-simulation-environment)
 - [How to code and build the controller](#how-to-code-and-build-the-controller)
 - [Useful tips](#useful-tips)
 
+---
 
 ### How to install the software
 <details>
@@ -47,8 +48,8 @@ In this exercise, we challenge you to design a controller to **follow a contour 
     ```
     > Note: it is important to `cd` inside the cloned repository `neutouch_summer_school_contour`in order to create the container succesfully using the command above (otherwise `$PWD` will not contain the correct path.)
 
-If you have problems running the command due to nvidia related issues you might want to look [here](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit) and follow [this](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit).
-  
+If you have problems running the command due to Nvidia-related issues you might want to have a look at [these](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit) instructions.
+
 Should you need to attach to the container you have created at any time, you can always use (**this comes in handy if you need to open more the one terminal inside the container**):
 ```console
 docker exec -it contour_following bash
@@ -60,7 +61,9 @@ docker start contour_following
 ```
 </details>
 
-### How to start the simulation environment
+---
+
+### How to use the simulation environment
 <details>
 <summary>Click to open</summary>
 
@@ -76,11 +79,11 @@ Should you need to stop the environment, you can use the red button `Stop all`. 
 
 #### How to pause the simulation
 
-If you need to pause the simulation, e.g. to save resources, press the backspace on the keyboard (while the focus is on the Gazebo windows) or press the pause button in the Gazebo windows.
+If you need to pause the simulation, e.g. to save resources, press the backspace on the keyboard (while the focus is on the Gazebo window) or press the pause button in the Gazebo windows.
 
 <p align="center"><img src="assets/gazebo_pause.png" alt="" width=800px/></p>
 
-#### How to Change the contour
+#### How to change the contour
 
 We provide several contours you can use in the exercise. They can be listed [here](https://github.com/2103simon/icub_haptic_exploration_environment/tree/master/environment/models/contour_following). To change the contour please proceed as follows:
 
@@ -91,18 +94,20 @@ We provide several contours you can use in the exercise. They can be listed [her
 1. Run the following from within the container:
 ```console
    cd /usr/local/src/icub_haptic_exploration_environment/build
-   gedit ../environment/worlds/he_scenario.sdf
+   nano ../environment/worlds/he_scenario.sdf
 ```
 1. Change line `40` to `model://cf_<name>` where `<name>` is e.g. `circle_2_5d`
 
 1. Change line `51` to `to_be_followed::<name>::<name>_root_link`
 
-1. Save and close `gedit`
+1. Save and close `nano`
 
 1. Run `make install`
 
 After that, you can restart the simulation environment and play with the new shape.
 </details>
+
+---
 
 ### How to code and build the controller
 
@@ -123,9 +128,11 @@ make
 ```
 
 - The resulting executable `contour_following` can be run using `./contour_following`. Please first run the simulation environment, otherwise the executable will not be able to connect to the robot.
-- The module will first close all the fingers, except the right index, and then will move the right hand to an initial pose. After that, the code within `ContourFollowingModule::updateModule()` will be executed periodically.
+- The module will first close all the fingers, except the right index and thumb, and then will move the right hand to an initial pose. After that, the code within `ContourFollowingModule::updateModule()` will be executed periodically.
 
 </details>
+
+---
 
 ### Useful tips
 
@@ -145,6 +152,8 @@ The code is implemented as a standalone class `ContourFollowingModule`:
 > Bear in mind that the method is called periodically and goes out of scope at the end of each run. Should you need to store any data outside of the scope of a single method update, you will need to store it in a **class member variable**.
 
 </details>
+
+---
 
 #### Sensors input
 
@@ -193,6 +202,8 @@ Sensors simulate the behavior of the iCub humanoid robot tactile sensors that ar
   ```
 
 </details>
+
+---
 
 #### Robot control
 
